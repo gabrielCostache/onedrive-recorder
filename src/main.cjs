@@ -25,6 +25,17 @@ function saveJSON(name, value) {
 }
 function saveLibrary() { saveJSON('library.json', library); }
 function send(channel, value) { if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) win.webContents.send(channel, value); }
+function isAppDocument(url) {
+  try {
+    const actual = new URL(url);
+    const expected = new URL(page);
+    if (actual.protocol !== 'file:' || expected.protocol !== 'file:') return false;
+    actual.search = actual.hash = '';
+    expected.search = expected.hash = '';
+    const normalizedPath = value => path.resolve(fileURLToPath(value)).replace(/\\/g, '/').normalize('NFC').toLowerCase();
+    return normalizedPath(actual) === normalizedPath(expected);
+  } catch { return false; }
+}
 function publicState() {
   return { ready: Boolean(destinationPath), destinationPath, notice: startupNotice,
     recordings: library.map(item => ({ id: item.id, title: item.title, createdAt: item.createdAt,
@@ -51,7 +62,14 @@ function handle(channel, fn) {
     const isMainFrame = senderFrame && mainFrame
       && senderFrame.processId === mainFrame.processId
       && senderFrame.routingId === mainFrame.routingId;
-    if (event.sender !== contents || !isMainFrame || senderFrame.url !== page) throw new Error('Cerere neautorizată.');
+    const reason = event.sender !== contents ? 'sender-webcontents'
+      : !senderFrame || !mainFrame ? 'frame-unavailable'
+        : !isMainFrame ? 'not-main-frame'
+          : !isAppDocument(senderFrame.url) ? 'unexpected-document' : '';
+    if (reason) {
+      try { fs.appendFileSync(path.join(dataDir, 'ipc-errors.log'), `${new Date().toISOString()} ${channel}: ${reason}\n`, { mode: 0o600 }); } catch {}
+      throw new Error('Cerere neautorizată.');
+    }
     return fn(...args);
   });
 }
