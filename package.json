@@ -1,6 +1,6 @@
 {
   "name": "onedrive-recorder",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "private": true,
   "description": "Screen recording saved directly in a locally synced OneDrive folder",
   "author": "OneDrive Recorder contributors",
