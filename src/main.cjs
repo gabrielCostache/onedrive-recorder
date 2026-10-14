@@ -4,7 +4,7 @@ const fsp = require('node:fs/promises');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { randomUUID } = require('node:crypto');
-const { recordingFileName, verifyWritableFolder } = require('./local-storage.cjs');
+const { recordingFileName, rebaseRecordings, verifyWritableFolder } = require('./local-storage.cjs');
 
 const legacyUserDataDir = app.getPath('userData');
 const stableUserDataDir = path.join(app.getPath('appData'), 'OneDrive Recorder');
@@ -56,6 +56,7 @@ handle('choose-folder', async () => {
   const result = await dialog.showOpenDialog(win, { title: 'Alege folderul OneDrive sincronizat', properties: ['openDirectory', 'createDirectory'] });
   if (result.canceled || !result.filePaths[0]) return publicState();
   const selected = await verifyWritableFolder(result.filePaths[0]);
+  if (await rebaseRecordings(library, config.destinationPath, selected)) saveLibrary();
   destinationPath = selected;
   config.destinationPath = selected;
   saveJSON('config.json', config);

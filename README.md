@@ -16,7 +16,7 @@ OneDrive gestionează sincronizarea și crearea linkului. Recorder poate confirm
 
 Folderul ales și istoricul Recorder sunt păstrate în profilul Windows al utilizatorului, în `%APPDATA%\OneDrive Recorder`. Aceste date rămân acolo dacă muți sau redenumești fișierul `.exe`; nu muta și nu șterge folderul de date dacă vrei să păstrezi istoricul.
 
-Recorder păstrează calea exactă a folderului video. Dacă redenumești sau muți acel folder în Explorer, alege din nou folderul cu butonul **Folder OneDrive**. Istoricul rămâne, dar clipurile vechi vor continua să indice locația lor precedentă.
+Recorder păstrează calea exactă a folderului video. Dacă redenumești sau muți acel folder în Explorer, alege din nou folderul cu butonul **Folder OneDrive**. Dacă vechiul folder nu mai există și clipurile sunt în folderul nou, Recorder le reconectează în istoric după numele unic al fișierului. Dacă nu au fost mutate și clipurile, istoricul rămâne, dar fișierele respective vor fi raportate ca indisponibile.
 
 ## Dezvoltare
 

@@ -22,7 +22,7 @@ Testul desktop folosește Electron și MediaRecorder reale cu un flux sintetic. 
 
 ## Verificări și limite
 
-Înregistrările noi sunt scrise în destinația selectată, cu nume sigur și sufix unic. Configurația stabilă și metadatele bibliotecii sunt păstrate în `%APPDATA%\OneDrive Recorder`, indiferent de locația/numele executabilului. La prima pornire după migrare, aplicația copiază configul și biblioteca veche fără să șteargă sursa. Înregistrările vechi rămân în directorul lor local și nu sunt mutate automat.
+Înregistrările noi sunt scrise în destinația selectată, cu nume sigur și sufix unic. Configurația stabilă și metadatele bibliotecii sunt păstrate în `%APPDATA%\OneDrive Recorder`, indiferent de locația/numele executabilului. La prima pornire după migrare, aplicația copiază configul și biblioteca veche fără să șteargă sursa. Când un folder video redenumit nu mai există, reselectarea folderului actualizează căile istorice doar pentru clipurile găsite acolo cu același nume unic și aceeași dimensiune.
 
 Faviconul și marcajul de brand folosesc `src/french-bulldog-camera.svg`: față de bulldog francez tigrat gri, cu cameră și LED roșu animat.
 

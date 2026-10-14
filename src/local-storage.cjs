@@ -29,4 +29,20 @@ async function verifyWritableFolder(selected) {
   }
   return resolved;
 }
-module.exports = { safeTitle, recordingFileName, verifyWritableFolder };
+async function rebaseRecordings(records, previousFolder, selectedFolder) {
+  if (!previousFolder || path.resolve(previousFolder) === path.resolve(selectedFolder)) return 0;
+  const oldFolder = path.resolve(previousFolder);
+  if (await fs.stat(oldFolder).then(() => true, () => false)) return 0;
+  const normalize = value => process.platform === 'win32' ? path.resolve(value).toLowerCase() : path.resolve(value);
+  let moved = 0;
+  for (const item of records) {
+    if (!item.fileName || !item.path || normalize(path.dirname(item.path)) !== normalize(oldFolder)) continue;
+    const candidate = path.join(selectedFolder, item.fileName);
+    const stat = await fs.stat(candidate).catch(() => null);
+    if (!stat?.isFile() || (item.bytes && stat.size !== item.bytes)) continue;
+    item.path = candidate;
+    moved++;
+  }
+  return moved;
+}
+module.exports = { safeTitle, recordingFileName, verifyWritableFolder, rebaseRecordings };
