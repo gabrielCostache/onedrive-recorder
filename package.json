@@ -1,29 +1,25 @@
 {
   "name": "onedrive-recorder",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "Screen recording with local storage and OneDrive upload",
+  "description": "Screen recording saved directly in a locally synced OneDrive folder",
   "author": "OneDrive Recorder contributors",
   "main": "src/main.cjs",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "start": "electron .",
     "test": "node --test test/*.test.cjs",
     "test:desktop": "node test/desktop-smoke.cjs",
-    "setup": "install-electron",
     "check": "node scripts/check.cjs",
-    "prepack": "node scripts/prepare-build.cjs",
     "pack": "electron-builder --dir",
-    "predist": "node scripts/prepare-build.cjs",
     "dist": "electron-builder"
   },
-  "dependencies": {
-    "@azure/msal-node": "6.0.1"
-  },
   "devDependencies": {
-    "@playwright/test": "^1.63.0",
     "electron": "44.4.4",
-    "electron-builder": "26.15.3"
+    "electron-builder": "26.15.3",
+    "@playwright/test": "^1.63.0"
   },
   "build": {
     "appId": "com.onedrive.recorder.desktop",
@@ -47,12 +43,11 @@
     },
     "win": {
       "target": [
-        "nsis"
+        "portable"
       ]
     },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+    "portable": {
+      "artifactName": "OneDrive-Recorder-${version}-portable.${ext}"
     },
     "linux": {
       "target": [

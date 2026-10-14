@@ -3,40 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="french-bulldog-camera.svg">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self' blob: recording:; connect-src 'none'; object-src 'none'; base-uri 'none'; frame-src 'none'">
   <title>OneDrive Recorder</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <section id="onboarding" class="onboarding" aria-labelledby="welcome-title">
-    <div class="welcome-brand"><span class="brand-mark">◉</span> recorder <span class="welcome-version">RECORDER FOR ONEDRIVE</span></div>
+    <div class="welcome-brand"><img class="brand-mark mascot" src="french-bulldog-camera.svg" alt=""> recorder <span class="welcome-version">RECORDER FOR ONEDRIVE</span></div>
     <div class="welcome-layout">
-      <div class="welcome-intro"><div class="eyebrow">SPAȚIUL TĂU. REGULILE TALE.</div><h1 id="welcome-title">Mai întâi, conectăm<br>OneDrive-ul tău.</h1><p>Un cont Microsoft, un folder pentru videoclipuri.<br>Apoi ești gata să arăți ce ai de spus.</p><ol class="welcome-steps"><li id="step-account"><span>1</span><div><strong>Conectează OneDrive</strong><p>Cont personal sau de serviciu. Tu alegi.</p></div></li><li id="step-folder"><span>2</span><div><strong>Alege unde salvăm</strong><p>Un folder din propriul tău OneDrive.</p></div></li><li id="step-ready"><span>3</span><div><strong>Înregistrează și trimite</strong><p>Copie locală și upload automat în folderul ales.</p></div></li></ol><div class="welcome-note">Fără un cont nou în Recorder. Te autentifici direct la Microsoft, în browserul tău.</div></div>
-      <div class="welcome-card"><div class="welcome-cloud">☁</div><span class="pill">MICROSOFT ONEDRIVE</span><h2 id="setup-heading">Unde vrei să te conectezi?</h2><p id="setup-description">Conectează contul Microsoft în care vrei să păstrezi înregistrările.</p>
-        <div id="setup-account" class="setup-account" hidden><span class="connection-dot"></span><strong id="setup-account-name"></strong><button id="switch-account" class="text-button">Schimbă</button></div>
-        <div id="missing-config" class="notice" hidden>Conectarea Microsoft nu este încă activată în această versiune. Editorul aplicației trebuie să finalizeze configurarea înainte de distribuire.</div>
-        <button id="setup-login" class="primary wide">Conectează OneDrive ↗</button>
-        <div id="login-wait" hidden><div class="waiting"><span class="spinner"></span> Continuă autentificarea în browser…</div><button id="cancel-auth" class="text-button">Anulează</button></div>
-        <div id="setup-folder" hidden><div class="destination-preview"><span>▤</span><div><small>FOLDER PENTRU ÎNREGISTRĂRI</small><strong id="destination-name">Alege un folder</strong></div></div><button id="choose-folder" class="secondary wide">Alege folderul din OneDrive</button><button id="verify-saved" class="primary wide" hidden>Verifică și continuă</button></div>
-        <div id="setup-error" class="inline-error" role="alert" hidden></div><p id="session-note" class="help"></p><button id="setup-return" class="text-button" hidden>← Înapoi la înregistrări</button><button id="developer-settings" class="text-button developer-link" hidden>Configurare pentru dezvoltator</button>
+      <div class="welcome-intro"><div class="eyebrow">SPAȚIUL TĂU. REGULILE TALE.</div><h1 id="welcome-title">Înregistrează direct<br>în OneDrive.</h1><p>Alege folderul sincronizat de OneDrive pe acest calculator.<br>Recorder salvează clipurile acolo.</p><ol class="welcome-steps"><li><span>1</span><div><strong>Alege folderul local OneDrive</strong><p>Fără autentificare în Recorder și fără Client ID.</p></div></li><li><span>2</span><div><strong>Înregistrează ecranul și vocea</strong><p>Clipurile sunt salvate direct în folder.</p></div></li><li><span>3</span><div><strong>Partajează din OneDrive</strong><p>Folosește Share pentru a crea un link.</p></div></li></ol><div class="welcome-note">Recorder nu vede parolele și nu creează linkuri în numele tău. OneDrive gestionează sincronizarea și accesul.</div></div>
+      <div class="welcome-card"><div class="welcome-cloud">☁</div><span class="pill">FOLDER ONEDRIVE SINCRONIZAT</span><h2 id="setup-heading">Alege folderul OneDrive sincronizat</h2><p id="setup-description">Selectează un folder OneDrive disponibil pe acest calculator.</p>
+        <div class="destination-preview"><span>▤</span><div><small>FOLDER PENTRU ÎNREGISTRĂRI</small><strong id="destination-name">Niciun folder selectat</strong></div></div>
+        <button id="choose-folder" class="primary wide">Alege folderul OneDrive ↗</button><button id="setup-open-folder" class="secondary wide" hidden>Deschide folderul</button>
+        <div id="setup-error" class="inline-error" role="alert" hidden></div><button id="setup-return" class="text-button" hidden>← Înapoi la înregistrări</button>
       </div>
-    </div><footer class="welcome-footer">Conexiune directă la Microsoft <span>·</span> Fișierele tale rămân în contul tău <span>·</span> Fără parolă salvată în Recorder</footer>
+    </div><footer class="welcome-footer">Salvare locală în folderul OneDrive <span>·</span> Sincronizare gestionată de OneDrive <span>·</span> Fără Client ID</footer>
   </section>
   <div id="workspace" class="workspace" hidden>
   <aside class="sidebar">
-    <div class="brand"><span class="brand-mark">◉</span><div>recorder<span>FOR ONEDRIVE</span></div></div>
+    <div class="brand"><img class="brand-mark mascot" src="french-bulldog-camera.svg" alt=""><div>recorder<span>FOR ONEDRIVE</span></div></div>
     <div class="workspace-label">SPAȚIUL TĂU</div>
     <button class="nav active" id="new-recording">◉ <span>Înregistrează</span><span class="nav-plus">+</span></button>
     <button class="nav" id="library-nav">▤ <span>Înregistrările mele</span><span id="count" class="count">0</span></button>
     <div class="sidebar-bottom">
       <div class="cloud-icon">☁</div><strong>Videourile tale.<br>În OneDrive-ul tău.</strong>
-      <p>O copie pe dispozitiv. Videoclipul în folderul tău OneDrive.</p>
-      <button class="text-button" id="settings-open">Cont și folder OneDrive ↗</button>
-      <div class="version">DESKTOP PREVIEW · 0.2</div>
+      <p>Fișierele sunt salvate și sincronizate din folderul OneDrive ales.</p>
+      <button class="text-button" id="settings-open">Folder OneDrive ↗</button>
+      <div class="version">DESKTOP PREVIEW · 0.3</div>
     </div>
   </aside>
   <main>
-    <header><span class="breadcrumb">Spațiul personal <span>/</span> Studio</span><button id="connect" class="account-button"><span class="connection-dot"></span><span id="account-label">Conectează OneDrive</span></button></header>
+    <header><span class="breadcrumb">Spațiul personal <span>/</span> Studio</span><button id="connect" class="account-button"><span class="connection-dot"></span><span id="account-label">Folder OneDrive</span></button></header>
     <section class="intro"><div class="eyebrow">MAI PUȚINE ȘEDINȚE. MAI MULTĂ CLARITATE.</div><h1>Arată. Explică. Trimite.</h1><p id="workspace-destination">Înregistrările se salvează în folderul ales din OneDrive.</p></section>
     <section class="studio">
       <div class="studio-top"><span class="section-label"><span class="live-dot"></span> ÎNREGISTRARE NOUĂ</span><span class="pill">Salvare locală automată</span></div>
@@ -49,14 +47,12 @@
           <p class="shortcut">Oprire rapidă: <kbd>Ctrl / ⌘</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></p>
         </div>
       </div>
-      <div class="studio-footer"><span>◈ &nbsp; La oprire: salvare locală și upload automat în OneDrive.</span><span>WebM · până la 1080p · 30 fps</span></div>
+      <div class="studio-footer"><span>◈ &nbsp; Clipul se salvează în folderul OneDrive ales; sincronizarea se face separat de aplicația OneDrive.</span><span>WebM · până la 1080p · 30 fps</span></div>
     </section>
     <section class="library" id="library"><div class="library-heading"><div><h2>Înregistrările tale</h2><p>De la prima idee la ultimul detaliu.</p></div><span id="library-total">0 videoclipuri</span></div><div id="recordings"></div></section>
   </main>
   </div>
   <div id="status" role="status" aria-live="polite" hidden></div>
-  <dialog id="settings"><form id="settings-form"><div class="dialog-heading"><h2>Configurare pentru dezvoltator</h2><button type="button" class="icon-button" data-close="settings" aria-label="Închide">×</button></div><p>Client ID-ul se configurează o singură dată de editor. Utilizatorii aplicației se conectează apoi cu propriul cont Microsoft.</p><label for="client-id">APPLICATION CLIENT ID</label><input id="client-id" required placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"><p class="help">Conturi personale + organizații · Files.ReadWrite · Mobile and desktop redirect: http://localhost. Fără client secret.</p><button class="primary" type="submit">Salvează configurarea</button></form></dialog>
-  <dialog id="folder-dialog"><div class="dialog-heading"><h2>Unde salvăm înregistrările?</h2><button class="icon-button" data-close="folder-dialog" aria-label="Închide">×</button></div><p>Alege un folder din OneDrive sau creează unul pentru videoclipuri.</p><div class="folder-navigation"><button id="folder-up" class="secondary">↑ Înapoi</button><strong id="folder-path">OneDrive</strong></div><div id="folder-list" class="folder-list"></div><form id="new-folder-form"><input id="new-folder-name" placeholder="Numele unui folder nou" maxlength="100" aria-label="Numele unui folder nou" required><button class="secondary" type="submit">Creează folder</button></form><div id="folder-error" class="inline-error" role="alert" hidden></div><button class="primary wide" id="confirm-folder">Folosește acest folder</button><p class="help">Verificăm conexiunea și dreptul de salvare înainte de a continua.</p></dialog>
   <dialog id="source-dialog"><div class="dialog-heading"><h2>Alege ecranul sau fereastra</h2><button class="icon-button" data-close="source-dialog" aria-label="Închide">×</button></div><p>Pe macOS poate fi necesară permisiunea Screen Recording în System Settings.</p><div id="sources" class="sources"></div></dialog>
   <dialog id="preview-dialog"><div class="dialog-heading"><h2 id="preview-title">Previzualizare</h2><button class="icon-button" data-close="preview-dialog" aria-label="Închide">×</button></div><video id="preview" controls></video></dialog>
   <script src="renderer.js"></script>

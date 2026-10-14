@@ -49,3 +49,7 @@
 #new-folder-form button{white-space:nowrap}
 @media(max-width:1080px){.onboarding{padding:27px 36px}.welcome-layout{gap:32px;margin-top:48px}.welcome-intro h1{font-size:36px}.welcome-card{padding:26px}.welcome-card h2{font-size:23px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.spinner{animation:none}}
+
+/* Animated gray brindle French bulldog camera mark. */
+.brand-mark.mascot{display:block;width:52px;height:52px;object-fit:contain;padding:0;background:transparent;border-radius:0;flex:0 0 auto}
+.welcome-brand .brand-mark.mascot{width:44px;height:44px;padding:0;border-radius:0}

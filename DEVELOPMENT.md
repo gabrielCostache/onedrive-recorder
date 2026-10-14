@@ -1,41 +1,33 @@
 # Continuarea dezvoltării
 
-## Stare la 14 octombrie 2026
+## Starea la 14 octombrie 2026
 
-Sursele actuale sunt prototipul 0.2 cu integrare Microsoft Graph. Client ID-ul este gol; autentificarea reală și distribuția 0.2 nu sunt activate. Testele folosesc servicii Microsoft simulate. Pachetele 0.1 sunt prototipuri mai vechi, nesemnate, și nu corespund surselor actuale.
+Versiunea 0.3 elimină autentificarea MSAL, Microsoft Graph, cerința Client ID și uploadul pornit de Recorder. Destinația este acum un folder local ales de utilizator; aplicația verifică scrierea, salvează înregistrarea acolo și oferă o acțiune care selectează fișierul în managerul de fișiere pentru partajarea OneDrive. Buildul Windows folosește formatul portabil cu un singur `.exe`.
 
-## Ultima decizie a utilizatorului — de implementat
+Nu există verificare de sincronizare în cloud sau generare automată de link. Acestea necesită o integrare Microsoft autorizată. Utilizatorul configurează clientul OneDrive oficial pe dispozitiv și gestionează share-ul prin comenzile acestuia.
 
-- Eliminăm necesitatea unui Client ID și a autentificării Microsoft în Recorder.
-- La prima pornire, utilizatorul alege un folder local din OneDrive-ul său sincronizat.
-- Păstrăm folderul în configurația locală și îl reutilizăm după repornire.
-- Utilizatorul poate da un titlu înregistrării; fișierele trebuie să aibă nume valide pe toate platformele, fără suprascrierea clipurilor cu același titlu.
-- La Stop, clipul se salvează automat în folderul ales. Clientul OneDrive gestionează sincronizarea; Recorder nu poate confirma încărcarea în cloud doar din salvarea locală.
-- Dacă folderul nu mai este disponibil sau nu permite scrierea, afișăm o eroare clară și păstrăm înregistrarea recuperabilă.
-- Permitem schimbarea folderului din setări, când nu se înregistrează.
-- Nu promitem un link automat individual fără integrarea Graph. Partajarea rămâne prin OneDrive.
-- Pe Linux trebuie o soluție de sincronizare compatibilă instalată separat.
+## Pornire
 
-Această migrare NU este implementată. README descrie încă fluxul Graph existent. Trebuie actualizate UI, IPC, persistența, testele, documentația și verificarea de build care cere Client ID.
-
-## Pornire pe alt desktop
-
-Instalează Git și Node.js 24, clonează repositoryul și rulează din rădăcina lui:
+Instalează Git și Node.js 24, apoi rulează din rădăcina repositoryului:
 
 ```sh
 npm ci
-npm run setup
 npm run check
 npm test
+npm run test:desktop
 npm start
 ```
 
-`npm run test:desktop` verifică fluxul în Electron cu video sintetic. Capturile generate merg în `test-results/desktop/` (ignorat de Git). Capturile istorice sunt în `docs/screenshots/`.
+Testul desktop folosește Electron și MediaRecorder reale cu un flux sintetic. Folderul de test este temporar; testul nu se conectează la OneDrive.
 
-După modificări: `git add`, `git commit`, `git push`. Pe celălalt calculator: `git pull`, apoi `npm ci` dacă s-au schimbat dependențele.
+## Verificări și limite
 
-## Verificări și limite cunoscute
+Înregistrările noi sunt scrise în destinația selectată, cu nume sigur și sufix unic. Configurația stabilă și metadatele bibliotecii sunt păstrate în `%APPDATA%\OneDrive Recorder`, indiferent de locația/numele executabilului. La prima pornire după migrare, aplicația copiază configul și biblioteca veche fără să șteargă sursa. Înregistrările vechi rămân în directorul lor local și nu sunt mutate automat.
 
-Anterior au trecut verificarea sintactică, 17 teste unitare și testul desktop pe macOS. Nu sunt validate login/upload reale, captură fizică de lungă durată sau rulare Windows/Linux. Buildurile Windows NSIS și Linux AppImage pe Mac ARM au eșuat din cauza instrumentelor de ambalare; folosim runner-ele native din workflow pentru builduri ulterioare. Semnarea și notarizarea nu sunt configurate.
+Faviconul și marcajul de brand folosesc `src/french-bulldog-camera.svg`: față de bulldog francez tigrat gri, cu cameră și LED roșu animat.
 
-Repositoryul conține sursele, lockfile, teste, workflow, documentație și capturi. `node_modules` se reinstalează; directoarele de aplicații dezarhivate și cache-urile de build sunt regenerabile și nu se versioneză. Nu transferăm tokenuri, sesiuni, parole sau înregistrări personale.
+Nu sunt încă validate pe acest checkout autentificarea și sincronizarea unui client OneDrive real, permisiunile/captura fizică pe Windows/Linux/macOS sau clipurile lungi. Pentru distribuție, folosește runner-ele native din GitHub Actions; semnarea Windows și notarizarea macOS trebuie configurate separat dacă sunt necesare.
+
+## Repository
+
+`src/` conține aplicația. `test/` conține testele helper-ilor locali și testul desktop. `docs/screenshots/` păstrează capturile istorice, unele din versiunea 0.2 și nu reflectă onboarding-ul 0.3. `node_modules/`, `dist/` și `test-results/` se regenerează și nu se versioneză.

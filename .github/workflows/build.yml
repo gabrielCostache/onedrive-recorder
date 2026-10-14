@@ -19,15 +19,13 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
-      - run: npm run setup
       - run: npm run check
       - run: npm test
       - run: npm run test:desktop
-        if: runner.os == 'macOS'
+        if: runner.os == 'Windows' || runner.os == 'macOS'
       - run: npm run dist -- --publish never
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
-          ONEDRIVE_CLIENT_ID: ${{ vars.ONEDRIVE_CLIENT_ID }}
       - uses: actions/upload-artifact@v4
         with:
           name: onedrive-recorder-${{ matrix.os }}
