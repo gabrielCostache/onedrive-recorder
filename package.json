@@ -44,7 +44,8 @@
     "win": {
       "target": [
         "portable"
-      ]
+      ],
+      "icon": "src/french-bulldog-camera.ico"
     },
     "portable": {
       "artifactName": "OneDrive-Recorder-${version}-portable.${ext}"

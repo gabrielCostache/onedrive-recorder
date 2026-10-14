@@ -147,6 +147,7 @@ handle('open-folder', async () => {
 
 function createWindow() {
   win = new BrowserWindow({ width: 1220, height: 820, minWidth: 950, minHeight: 700, backgroundColor: '#f5f5f2',
+    icon: path.join(__dirname, 'french-bulldog-camera.png'),
     title: 'OneDrive Recorder', webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true, backgroundThrottling: false } });
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   win.webContents.on('will-navigate', event => event.preventDefault());
