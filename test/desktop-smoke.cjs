@@ -7,7 +7,7 @@ const os = require('node:os');
 (async () => {
   const profile = await mkdtemp(path.join(os.tmpdir(), 'recorder-desktop-'));
   const root = path.resolve(__dirname, '..');
-  const screenshots = path.resolve(root, '../../work/qa-v02');
+  const screenshots = path.resolve(root, 'test-results/desktop');
   await mkdir(screenshots, { recursive: true });
   let desktop;
   const launch = async fixture => {
