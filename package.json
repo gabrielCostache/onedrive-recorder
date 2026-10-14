@@ -1,0 +1,66 @@
+{
+  "name": "onedrive-recorder",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Screen recording with local storage and OneDrive upload",
+  "author": "OneDrive Recorder contributors",
+  "main": "src/main.cjs",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.cjs",
+    "test:desktop": "node test/desktop-smoke.cjs",
+    "setup": "install-electron",
+    "check": "node scripts/check.cjs",
+    "prepack": "node scripts/prepare-build.cjs",
+    "pack": "electron-builder --dir",
+    "predist": "node scripts/prepare-build.cjs",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "@azure/msal-node": "6.0.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "electron": "44.4.4",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.onedrive.recorder.desktop",
+    "productName": "OneDrive Recorder",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.productivity",
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "Înregistrează vocea ta în videoclipuri, când activezi microfonul."
+      }
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "AudioVideo",
+      "maintainer": "OneDrive Recorder contributors"
+    }
+  }
+}
