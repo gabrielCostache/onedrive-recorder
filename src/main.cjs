@@ -45,7 +45,13 @@ function record(id) {
 }
 function handle(channel, fn) {
   ipcMain.handle(channel, async (event, ...args) => {
-    if (event.sender !== win?.webContents || event.senderFrame !== win.webContents.mainFrame || event.senderFrame.url !== page) throw new Error('Cerere neautorizată.');
+    const contents = win?.webContents;
+    const senderFrame = event.senderFrame;
+    const mainFrame = contents?.mainFrame;
+    const isMainFrame = senderFrame && mainFrame
+      && senderFrame.processId === mainFrame.processId
+      && senderFrame.routingId === mainFrame.routingId;
+    if (event.sender !== contents || !isMainFrame || senderFrame.url !== page) throw new Error('Cerere neautorizată.');
     return fn(...args);
   });
 }
