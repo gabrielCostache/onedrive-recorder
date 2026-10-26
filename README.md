@@ -1,65 +1,52 @@
-# OneDrive Recorder · 0.3
+# OneDrive Recorder
 
-Aplicație desktop pentru capturarea ecranului și a microfonului, cu salvare directă într-un folder local sincronizat de OneDrive. Recorder nu cere cont Microsoft în aplicație, Client ID, client secret sau integrare Microsoft Graph.
+**Loom's job, without the subscription.** Record your screen, get a link to send, and keep every file in storage you already own.
 
-## Cum funcționează
+Screen recorders are a strange product: you record locally, they host the file, they hand you back a link — and they charge you per seat, per month, forever, mostly for the hosting. But you already have hosting. OneDrive syncs folders and makes share links all day. This app just connects the two ends that were always yours: it records, finalises a clean WebM straight into your synced folder, and lets OneDrive produce the link you send.
 
-1. Instalează și configurează aplicația OneDrive oficială pe calculator. Autentificarea se face în OneDrive, în afara Recorder.
-2. La prima pornire, alege folderul OneDrive sincronizat. Recorder verifică dacă folderul există și poate scrie și șterge un fișier temporar.
-3. Selectează un ecran sau o fereastră, scrie un titlu și pornește înregistrarea.
-4. La oprire, fișierul WebM este finalizat și salvat direct în folderul selectat. Numele este curățat pentru Windows/macOS/Linux și include o parte unică pentru a evita suprascrierile.
-5. Pentru share, apasă **Partajează în OneDrive**. Recorder selectează fișierul în Explorer/Finder; folosește comanda **Share / Partajare** oferită de OneDrive ca să alegi audiența și să copiezi linkul.
+**What it saves you:** a per-seat recorder subscription for every person on the team — and the videos live somewhere you control instead of somewhere you rent. No account inside the app, no API keys, no Microsoft Graph integration. Nothing to authorise, nothing to revoke, no server of ours that can shut down and take your library with it.
 
-OneDrive gestionează sincronizarea și crearea linkului. Recorder poate confirma salvarea locală, dar nu poate confirma când fișierul a ajuns în cloud și nu poate crea automat un link de share fără o integrare Microsoft autorizată.
+![The recording studio](docs/screenshots/v0.2/studio.png)
 
-## Păstrarea configurării
+## How it works
 
-Folderul ales și istoricul Recorder sunt păstrate în profilul Windows al utilizatorului, în `%APPDATA%\OneDrive Recorder`. Aceste date rămân acolo dacă muți sau redenumești fișierul `.exe`; nu muta și nu șterge folderul de date dacă vrei să păstrezi istoricul.
+1. Install the official OneDrive client and sign in there — authentication never touches this app.
+2. On first run, pick your synced folder. The app verifies it can write and delete a test file, so a wrong path fails immediately instead of after a recording.
+3. Pick a screen or window, name the recording, record.
+4. On stop, the WebM is finalised directly into the folder — filename cleaned for Windows/macOS/Linux, with a unique fragment so nothing is ever overwritten.
+5. Hit **Share**: the app selects the file in Explorer/Finder, and OneDrive's own share flow produces the link and decides who can open it.
 
-Recorder păstrează calea exactă a folderului video. Dacă redenumești sau muți acel folder în Explorer, alege din nou folderul cu butonul **Folder OneDrive**. Dacă vechiul folder nu mai există și clipurile sunt în folderul nou, Recorder le reconectează în istoric după numele unic al fișierului. Dacă nu au fost mutate și clipurile, istoricul rămâne, dar fișierele respective vor fi raportate ca indisponibile.
+That one design decision — ride the official client instead of integrating with it — is why this can be free. No account system, no storage bill, no server to keep alive: nothing to charge for, and nothing to shut down later.
 
-## Dezvoltare
+![Onboarding — choosing the synced folder](docs/screenshots/v0.2/onboarding.png)
 
-Necesită Node.js 24 și npm:
+## Running it
+
+Node.js 24 and npm:
 
 ```sh
 npm ci
-npm run check
-npm test
-npm run test:desktop
+npm run check && npm test && npm run test:desktop
 npm start
 ```
 
-Testul desktop folosește Electron real și un flux video sintetic, cu folder temporar. Nu accesează un cont Microsoft real și nu validează sincronizarea OneDrive ori generarea reală a linkului.
-
-Build pentru un singur executabil Windows portabil:
+Portable Windows build (no installer needed):
 
 ```sh
 npm run dist -- --win --x64 --publish never
 ```
 
-Rezultatul este `dist/OneDrive-Recorder-0.3.0-portable.exe`. Nu necesită instalare separată; setările și istoricul sunt persistente în profilul Windows de mai sus.
+macOS and Linux builds work via `npm run dist -- --mac` / `--linux --x64` on their native runners. Windows signing and macOS notarisation are not configured.
 
-Build-uri opționale pentru celelalte platforme:
+## Honest limits
 
-```sh
-npm run dist -- --mac --publish never
-npm run dist -- --linux --x64 --publish never
-```
+- Recording format is WebM; OneDrive's in-browser player may not play it — download or convert if so.
+- The app confirms the **local** save; it cannot confirm cloud sync or mint share links itself (that would need the Graph integration this design deliberately avoids).
+- Pick the folder the OneDrive client actually syncs — any plain folder records fine but uploads nothing. Linux needs a third-party sync client.
+- No webcam bubble, system audio, editing, transcription or auto-update. It records your screen into your own storage; that is the product.
 
-Folosește runner-ele native pentru fiecare sistem de operare. Semnarea Windows și semnarea/notarizarea macOS nu sunt configurate. Workflowul GitHub Actions poate construi instalatoarele fără secrete sau variabile Client ID.
+Settings and library live in `%APPDATA%\OneDrive Recorder` and survive moving the executable. If you move the video folder, re-pick it; recordings reconnect by their unique filenames.
 
-## Fișiere și recuperare
+---
 
-Înregistrările noi se salvează în folderul OneDrive ales, nu într-o copie ascunsă în directorul aplicației. Biblioteca Recorder ține metadatele în profilul local al aplicației. Dacă schimbi folderul, fișierele vechi rămân în locul în care au fost înregistrate.
-
-Dacă folderul dispare, devine read-only sau discul rămâne fără spațiu, Recorder afișează o eroare și păstrează fișierul parțial când sistemul permite. O înregistrare întreruptă poate să nu fie redabilă.
-
-Recorder nu detectează starea reală de sincronizare. Folderul ales trebuie să fie cel sincronizat de clientul OneDrive; alegerea unui folder obișnuit permite înregistrarea locală, dar nu îl va încărca în cloud. Pe Linux este necesar un client de sincronizare compatibil instalat separat.
-
-## Limite curente
-
-- Formatul de înregistrare este WebM; compatibilitatea playerului OneDrive poate varia. Dacă OneDrive nu redă fișierul, descarcă-l sau convertește-l separat.
-- Share-ul se finalizează în interfața OneDrive. Recorder nu controlează audiența, permisiunile sau copierea linkului.
-- Captura reală a ecranului și microfonului, clipurile lungi și permisiunile sistemului trebuie validate pe fiecare platformă înainte de distribuirea largă.
-- Nu sunt incluse camera în bulină, sunetul sistemului, editarea clipurilor, transcrierea sau auto-update.
+Built by [Gabriel Costache](https://needfortech.dev/work/onedrive-recorder) — the case study has the full design story. Romanian documentation: [README.ro.md](README.ro.md).
